@@ -68,7 +68,12 @@ export default function BloodRequestPage() {
     },
   });
 
-  const { control, handleSubmit, reset, formState: { errors } } = form;
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = form;
 
   const onSubmit: SubmitHandler<FormSchema> = async (data) => {
     const donorId = params.get("id");
@@ -76,25 +81,30 @@ export default function BloodRequestPage() {
 
     try {
       const toastId = toast.loading("loading...");
-      const response = await fetch("http://localhost:5000/api/donation-request", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `${token}`,
-        },
-        body: JSON.stringify({ donorId, ...data }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
+      const response = await fetch(
+        "https://blood-donor-backend.vercel.app/api/donation-request",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `${token}`,
+          },
+          body: JSON.stringify({ donorId, ...data }),
+        }
+      );
 
       const res = await response.json();
-      toast.success("Blood request successfully!", {
-        id: toastId,
-      });
-      reset();
-      router.push("/dashboard");
+      if (res.success) {
+        toast.success("Blood request successfully!", {
+          id: toastId,
+        });
+        reset();
+        router.push("/dashboard");
+      } else {
+        toast.error(res.errorDetails.meta.target[0], {
+          id: toastId,
+        });
+      }
     } catch (err) {
       toast.error("globa error");
     }
@@ -203,7 +213,10 @@ export default function BloodRequestPage() {
                 <FormItem>
                   <FormLabel>Additional Information</FormLabel>
                   <FormControl>
-                    <Textarea placeholder="Any additional information" {...field} />
+                    <Textarea
+                      placeholder="Any additional information"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage className="text-red-500">
                     {errors.additionalInfo?.message}
@@ -217,7 +230,10 @@ export default function BloodRequestPage() {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
                   </FormControl>
                   <FormLabel>I agree to the terms and conditions</FormLabel>
                   <FormMessage className="text-red-500">
