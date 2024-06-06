@@ -42,7 +42,7 @@ const formSchema = z
   });
 
 function ChangePassword() {
-  const router =useRouter()
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -54,31 +54,43 @@ function ChangePassword() {
   const token = getFromLocalStorage("accessToken");
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const res = await fetch("https://blood-donor-backend.vercel.app/api/change_password", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `${token}`,
-      },
-      body: JSON.stringify({
-        current_password: values.current_password,
-        new_password: values.new_password,
-        
-      }),
-    });
+    const toastId = toast.loading("loading...");
+    const res = await fetch(
+      "https://blood-donor-backend.vercel.app/api/change_password",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `${token}`,
+        },
+        body: JSON.stringify({
+          current_password: values.current_password,
+          new_password: values.new_password,
+        }),
+      }
+    );
 
     if (!res.ok) {
-      toast.error("Failed to change password");
+      toast.error("Failed to change password", {
+        id: toastId,
+      });
     }
     const result = await res.json();
-    console.log(result)
+    console.log(result);
     console.log(result);
     if (result.success) {
-      toast.success(result.message);
+      toast.success(result.message, {
+        id: toastId,
+      });
       form.reset();
-      router.push("/dashboard/profile")
+      router.push("/dashboard/profile");
     } else {
-    toast.error(result.message) ||  toast.error(result.errorDetails.meta.target[0]);
+      toast.error(result.message, {
+        id: toastId,
+      }) ||
+        toast.error(result.errorDetails.meta.target[0], {
+          id: toastId,
+        });
     }
   }
   return (

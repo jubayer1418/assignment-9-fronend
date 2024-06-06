@@ -75,6 +75,7 @@ export default function BloodRequestPage() {
     const token = getFromLocalStorage("accessToken");
 
     try {
+      const toastId = toast.loading("loading...");
       const response = await fetch("http://localhost:5000/api/donation-request", {
         method: "POST",
         headers: {
@@ -89,7 +90,9 @@ export default function BloodRequestPage() {
       }
 
       const res = await response.json();
-      toast.success("Blood request successfully!");
+      toast.success("Blood request successfully!", {
+        id: toastId,
+      });
       reset();
       router.push("/dashboard");
     } catch (err) {

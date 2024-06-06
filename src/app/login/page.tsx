@@ -28,6 +28,7 @@ const LoginPage: NextPage = () => {
   }, [auth, router]);
 
   const handleLogin: SubmitHandler<FieldValues> = async (values) => {
+    const toastId = toast.loading("loading...");
     try {
       const res = await userLogin({
         password: values.password,
@@ -35,15 +36,21 @@ const LoginPage: NextPage = () => {
       });
 
       if (res?.data?.accessToken) {
-        toast.success(res?.message);
+        toast.success(res?.message, {
+          id: toastId,
+        });
         setAuth(res?.data?.accessToken);
         storeUserInfo({ accessToken: res?.data?.accessToken });
         router.push("/");
       } else {
-        toast.error(res.message);
+        toast.error(res.message, {
+          id: toastId,
+        });
       }
     } catch (err: any) {
-      toast.error(err.message);
+      toast.error(err.message, {
+        id: toastId,
+      });
     }
   };
 

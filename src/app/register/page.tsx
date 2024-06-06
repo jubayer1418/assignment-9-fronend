@@ -21,12 +21,13 @@ import { storeUserInfo } from "@/services/auth.services";
 import { register, userLogin } from "@/services/actions/registerUser";
 import BDSelect from "@/components/Forms/BDSelect";
 import { useAuth } from "@/utils/useAuth";
-import { defaultValues, validationSchemaRegister } from "@/utils/validation/validationSchema";
-
-
-
+import {
+  defaultValues,
+  validationSchemaRegister,
+} from "@/utils/validation/validationSchema";
 
 const RegisterPage = () => {
+  const toastId = toast.loading("loading...");
   const router = useRouter();
   const { setAuth, auth } = useAuth();
   if (auth) router.push("/");
@@ -35,7 +36,9 @@ const RegisterPage = () => {
       const res = await register(values);
 
       if (res?.data?.id) {
-        toast.success(res?.message);
+        toast.success(res?.message, {
+          id: toastId,
+        });
         const result = await userLogin({
           password: values.password,
           email: values.bloodDoner.email,
@@ -44,15 +47,21 @@ const RegisterPage = () => {
         if (result?.data?.accessToken) {
           setAuth(res?.data?.accessToken);
           storeUserInfo({ accessToken: result?.data?.accessToken });
-          toast.success("User Login successfully");
+          toast.success("User Login successfully", {
+            id: toastId,
+          });
           window.location.reload();
           router.push("/");
         }
       } else {
-        toast.error("Please provide Name and Email unique!");
+        toast.error("Please provide Name and Email unique!", {
+          id: toastId,
+        });
       }
     } catch (err: any) {
-      toast.error(err.message);
+      toast.error(err.message, {
+        id: toastId,
+      });
     }
   };
 
