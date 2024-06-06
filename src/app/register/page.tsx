@@ -27,11 +27,11 @@ import {
 } from "@/utils/validation/validationSchema";
 
 const RegisterPage = () => {
-  const toastId = toast.loading("loading...");
   const router = useRouter();
   const { setAuth, auth } = useAuth();
   if (auth) router.push("/");
   const handleRegister = async (values: FieldValues) => {
+    const toastId = toast.loading("loading...");
     try {
       const res = await register(values);
 
