@@ -32,7 +32,7 @@ import {
 } from "@/components/ui/drawer";
 
 // Sample API URLs
-const FETCH_API_URL = "https://blood-donor-backend.vercel.app/api/donation-request-my-request";
+const FETCH_API_URL = "https://blood-donor-backend.vercel.app/api/donation-request";
 
 const BloodRequestsTable = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);

@@ -16,17 +16,32 @@ const SearchBloodDonors = ({ initialDonors }: DonorsPageProps) => {
   const [bloodType, setBloodType] = useState("");
   const [location, setLocation] = useState("");
   const [availability, setAvailability] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleFilterChange = async () => {
-    const res = await fetch(
-      `https://blood-donor-backend.vercel.app/api/donor-list?bloodType=${bloodType}&searchTerm=${location}&availability=${availability}`
-    );
-    const filteredDonors = await res.json();
+    setLoading(true);
+    setError("");
 
-    setDonors(filteredDonors.data);
+    try {
+      const res = await fetch(
+        `https://blood-donor-backend.vercel.app/api/donor-list?bloodType=${bloodType}&searchTerm=${location}&availability=${availability}`
+      );
+      if (!res.ok) {
+        throw new Error("Failed to fetch donors");
+      }
+      const filteredDonors = await res.json();
+
+      setDonors(filteredDonors.data);
+    } catch (err) {
+      setError("Something went wrong");
+    } finally {
+      setLoading(false);
+    }
   };
+
   return (
-    <section className="pt-10 container ">
+    <section className="pt-10 container">
       <Heading>Search Blood Donors</Heading>
       <FilterDonor
         bloodType={bloodType}
@@ -38,11 +53,17 @@ const SearchBloodDonors = ({ initialDonors }: DonorsPageProps) => {
         handleFilterChange={handleFilterChange}
       />
 
-      <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {donors?.slice(0, 10).map((donor: any) => (
-          <DonorCard donor={donor} key={donor.id} />
-        ))}
-      </div>
+      {loading ? (
+        <p>Loading...</p>
+      ) : error ? (
+        <p className="text-red-500">{error}</p>
+      ) : (
+        <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {donors?.slice(0, 10).map((donor: any) => (
+            <DonorCard donor={donor} key={donor.id} />
+          ))}
+        </div>
+      )}
     </section>
   );
 };
