@@ -26,7 +26,10 @@ const SearchBloodDonors = ({ initialDonors }: DonorsPageProps) => {
 
     try {
       const res = await fetch(
-        `https://blood-donor-backend.vercel.app/api/donor-list?bloodType=${bloodType}&searchTerm=${location}&availability=${availability}`
+        `https://blood-donor-backend.vercel.app/api/donor-list?bloodType=${bloodType}&searchTerm=${location}&availability=${availability}`,
+        {
+          cache: "no-cache",
+        }
       );
       if (!res.ok) {
         throw new Error("Failed to fetch donors");
@@ -55,7 +58,7 @@ const SearchBloodDonors = ({ initialDonors }: DonorsPageProps) => {
       />
 
       {loading ? (
-       <LoadingSpinner/>
+        <LoadingSpinner />
       ) : error ? (
         <p className="text-red-500">{error}</p>
       ) : (

@@ -77,6 +77,7 @@ export default function BloodRequestPage() {
 
   const onSubmit: SubmitHandler<FormSchema> = async (data) => {
     const donorId = params.get("id");
+    console.log({ donorId:donorId, ...data })
     const token = getFromLocalStorage("accessToken");
 
     try {
@@ -89,11 +90,12 @@ export default function BloodRequestPage() {
             "Content-Type": "application/json",
             Authorization: `${token}`,
           },
-          body: JSON.stringify({ donorId, ...data }),
+          body: JSON.stringify({ donorId:donorId, ...data }),
         }
       );
 
       const res = await response.json();
+      console.log(res)
       if (res.success) {
         toast.success("Blood request successfully!", {
           id: toastId,
