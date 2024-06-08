@@ -99,7 +99,7 @@ export default function BloodRequestPage() {
           id: toastId,
         });
         reset();
-        router.push("/dashboard");
+        router.push("/dashboard/requests");
       } else {
         toast.error(res.errorDetails.meta.target[0], {
           id: toastId,

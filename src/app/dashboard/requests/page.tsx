@@ -30,8 +30,9 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
+import LoadingSpinner from "@/components/LoadingSpiner";
 
-const FETCH_API_URL = "https://blood-donor-backend.vercel.app/api/donation-request";
+const FETCH_API_URL = "https://blood-donor-backend.vercel.app/api/donation-request-my";
 
 const BloodRequestsTable = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -40,7 +41,7 @@ const BloodRequestsTable = () => {
   const [error, setError] = useState("");
   const [selectedRequest, setSelectedRequest] = useState<any>(null);
   const token = getFromLocalStorage("accessToken");
-
+console.log(requests)
   useEffect(() => {
     const fetchBloodRequests = async () => {
       setLoading(true);
@@ -50,7 +51,7 @@ const BloodRequestsTable = () => {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            Authorization: `${token}`,
           },
         });
         const data = await response.json();
@@ -77,11 +78,11 @@ const BloodRequestsTable = () => {
     setLoading(true);
     setError("");
     try {
-      const response = await fetch(`${FETCH_API_URL}/${updatedRequest?.id}`, {
+      const response = await fetch(`${"https://blood-donor-backend.vercel.app/api/donation-request"}/${updatedRequest?.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          Authorization: `${token}`,
         },
         body: JSON.stringify({
           status: updatedRequest.requestStatus,
@@ -110,7 +111,7 @@ const BloodRequestsTable = () => {
 
   return (
     <>
-      {loading && <p>Loading...</p>}
+      {loading && <LoadingSpinner/>}
       {error && <p className="text-red-500">{error}</p>}
       {!loading && !error && (
         <Table>
@@ -147,7 +148,7 @@ const BloodRequestsTable = () => {
                   </Select>
                 </TableCell>
                 <TableCell>
-                  {request.requestStatus === "APPROVED" ? (
+                  {request.requestStatus  === "APPROVED" ? (
                     <>
                       <Button variant="outline" onClick={() => openDrawer(request)}>
                         Information

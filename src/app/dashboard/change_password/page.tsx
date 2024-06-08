@@ -27,13 +27,13 @@ import { redirect, useRouter } from "next/navigation";
 const formSchema = z
   .object({
     current_password: z.string().min(6, {
-      message: "Password must be at least 6 characters.",
+      message: "Password must be at least 8 characters.",
     }),
     new_password: z.string().min(6, {
-      message: "Password must be at least 6 characters.",
+      message: "Password must be at least 8 characters.",
     }),
     confirm_password: z.string().min(6, {
-      message: "Password must be at least 6 characters.",
+      message: "Password must be at least 8 characters.",
     }),
   })
   .refine((values) => values.new_password === values.confirm_password, {

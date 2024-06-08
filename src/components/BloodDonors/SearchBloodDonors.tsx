@@ -6,6 +6,7 @@ import FilterDonor from "../donor/FilterDonor";
 import { Donor } from "@/type";
 import { Search } from "lucide-react";
 import Heading from "../common/Heading";
+import LoadingSpinner from "../LoadingSpiner";
 
 interface DonorsPageProps {
   initialDonors: Donor[];
@@ -54,7 +55,7 @@ const SearchBloodDonors = ({ initialDonors }: DonorsPageProps) => {
       />
 
       {loading ? (
-        <p>Loading...</p>
+       <LoadingSpinner/>
       ) : error ? (
         <p className="text-red-500">{error}</p>
       ) : (

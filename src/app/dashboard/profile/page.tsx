@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import ProfileCard from "./ProfileCard";
 import { getFromLocalStorage } from "@/utils/local-storage";
+import LoadingSpinner from "@/components/LoadingSpiner";
 
 const ProfilePage = () => {
   const [profileData, setProfileData] = useState(null);
@@ -34,7 +35,7 @@ const ProfilePage = () => {
   }, [token]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <LoadingSpinner/>;
   }
 
   if (error) {

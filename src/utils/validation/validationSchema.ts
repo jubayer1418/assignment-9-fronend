@@ -4,10 +4,7 @@ export const validationSchema = z.object({
   password: z
     .string()
     .min(8, "Password must be at least 8 characters long")
-    .regex(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/,
-      "Password must contain at least one lowercase letter, one uppercase letter, one numeric digit, and one special character"
-    ),
+  ,
 });
 
 const bloodDonerValidationSchema = z.object({
@@ -21,10 +18,7 @@ export const validationSchemaRegister = z.object({
   password: z
     .string()
     .min(8, "Password must be at least 8 characters long")
-    .regex(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/,
-      "Password must contain at least one lowercase letter, one uppercase letter, one numeric digit, and one special character"
-    ),
+    ,
   bloodDoner: bloodDonerValidationSchema,
 });
 export const defaultValues = {
