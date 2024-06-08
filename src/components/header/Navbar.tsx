@@ -18,14 +18,17 @@ import { LogOut, User } from "lucide-react";
 import { useAuth } from "@/utils/useAuth";
 import { removeFromLocalStorage } from "@/utils/local-storage";
 import { ModeToggle } from "./theme";
+import { useRouter } from "next/navigation";
 
 
 const Navbar = () => {
   const { auth: isLoggedIn, setAuth } = useAuth();
+  const router = useRouter();
 
   const handleLogout: any = () => {
     removeFromLocalStorage("accessToken");
     setAuth(null);
+    router.push("/login");
   };
   return (
     <div className={"sticky top-0 w-full bg-background z-10"}>
