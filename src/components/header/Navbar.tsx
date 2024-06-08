@@ -20,7 +20,6 @@ import { removeFromLocalStorage } from "@/utils/local-storage";
 import { ModeToggle } from "./theme";
 import { useRouter } from "next/navigation";
 
-
 const Navbar = () => {
   const { auth: isLoggedIn, setAuth } = useAuth();
   const router = useRouter();
