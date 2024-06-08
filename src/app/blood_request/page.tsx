@@ -77,11 +77,11 @@ export default function BloodRequestPage() {
 
   const onSubmit: SubmitHandler<FormSchema> = async (data) => {
     const donorId = params.get("id");
-    console.log({ donorId:donorId, ...data })
+    console.log({ donorId: donorId, ...data });
     const token = getFromLocalStorage("accessToken");
+    const toastId = toast.loading("loading...");
 
     try {
-      const toastId = toast.loading("loading...");
       const response = await fetch(
         "https://blood-donor-backend.vercel.app/api/donation-request",
         {
@@ -90,12 +90,12 @@ export default function BloodRequestPage() {
             "Content-Type": "application/json",
             Authorization: `${token}`,
           },
-          body: JSON.stringify({ donorId:donorId, ...data }),
+          body: JSON.stringify({ donorId: donorId, ...data }),
         }
       );
 
       const res = await response.json();
-      console.log(res)
+      console.log(res);
       if (res.success) {
         toast.success("Blood request successfully!", {
           id: toastId,
@@ -107,8 +107,10 @@ export default function BloodRequestPage() {
           id: toastId,
         });
       }
-    } catch (err) {
-      toast.error("globa error");
+    } catch (err: any) {
+      toast.error(err.message, {
+        id: toastId,
+      });
     }
   };
 
